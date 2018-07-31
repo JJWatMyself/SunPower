@@ -1,6 +1,17 @@
 # SunPower
 This project is for monitoring SunPower solar using PRTG with Perl. Notes in reverse chronology are below
 
+2018/07/30 I did some work yesterday morning, adding a new section of code that will output the field you specify for all inverters.  The name of the channel is the serial number. It's an effective peice of logic that has a simple method to determine how many inverters there are in the system. This code section provides a way to compare the inverters to see any differences in performance, be it due to environmentals, or due to the performance of the internal components.  Where I left off was incorporating sub-routines, but seeing I have never really written perl before (well, I started a week or two ago now) there are some principles I have not researched yet.  I may end up having a couple duplicate code sections for now, just to keep the work on functionality moving.  I have also thought about another hybrid sensor that sums values from the inverters as a way to compare it to the Power Meter. In the mean time, now that there have been a couple of days of data-gathering, here are some screenshots. Interestingly there was a supervisor reboot this morning (uptime reset to zero) and it looks like it may foget about what inverters there are until they poewr up (sunlight).  No code has been posted yet.
+
+Power Meter on the generation side, 2 day view (5 minute averages)
+![Preview](https://raw.githubusercontent.com/JJWatMyself/SunPower/master/proof-of-concept3.png)
+
+Supervisor, 2 day view (5 minute averages)
+![Preview](https://raw.githubusercontent.com/JJWatMyself/SunPower/master/proof-of-concept4.png)
+
+Inverter (Panel), 2 day view (5 minute averages)
+![Preview](https://raw.githubusercontent.com/JJWatMyself/SunPower/master/proof-of-concept5.png)
+
 2018/07/28 Some optimizations are now in place:
 1) At night, Inverters go into an error state and the reported values remain frozen until state returns to working, e.g. degC reads 30 from dusk to dawn which is simply incorrect. The script will now change these values to zero.  Zero may not be the correct value as at times zero may be a valid value (e.g. in the winter). I'd prefer to store nulls, but that's for another day. I don't have a screenshot of this yet as I made the changes at around 1 AM and it looks a bit messy right now.
 
