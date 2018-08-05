@@ -44,9 +44,10 @@ Before you look at this and assume that 96% would be the target value for actual
 
 Technically the spec sheet isn’t wrong, they have chosen to display an integer and rounded up: 96%. But the rating is less than 96%, so increasing accuracy on this can help us improve decisions we might make when analyzing the inverter efficiency. Therefore we want actual_inv_eff (%) to be 95.5224% or greater.
 
-So for our fith field delta_inv_eff (%) we will analyze the inverter efficiency in a more intuitive fashion by comparing actual_inv_eff (%) to rated_inv_eff (%). This tells us how close (delta) to our super accurate version of ‘DC/AC CEC Conversion Efficiency’ the inverter is performing.  A positive value means the performance has exceeded (hurray!) the spec. A negative value means that the inverter is not performing to the stated spec (boooo!).  Observing these calculations for just one day I have already been able to conclude that when the power is less than 10-15%, the inverter under performs. At dawn and dusk or on a cloudy day if power is less than 10-15%, there is more power loss at the inverter. i.e. actual_inv_eff (%) < 95.5224%. The efficiency is as low as 65%. Who would have known?
+So for our fith field delta_inv_eff (%) we will analyze the inverter efficiency in a more intuitive fashion by comparing actual_inv_eff (%) to rated_inv_eff (%). This tells us how close (delta) to our super accurate version of ‘DC/AC CEC Conversion Efficiency’ the inverter is performing.  A positive value means the performance has exceeded (hurray!) the spec. A negative value means that the inverter is not performing to the stated spec (boooo!).  Observing these calculations for just one day I have already been able to conclude that when the power is less than 10-15%, the inverter under performs. At dawn and dusk or on a cloudy day if power is less than 10-15%, there is more power loss at the inverter. i.e. actual_inv_eff (%) < 95.5224%. The efficiency is as low as 65%. Who would have known?  At that power level though, who cares what the efficiency is.
 
-We can use these five new fields and make some decisions:
+
+So with all this new derived data, we can use the additional five new fields and make some decisions:
 
 Scenario 1:
 
@@ -54,7 +55,7 @@ Scenario 1:
 
     And p_mpptcont_output_power (%) and p_3phcont_output_power (%) < 100%
   
-    Then the panel may be in the shade, dirty or have a problem ☹
+    Then the panel may be in the shade, dirty, sub-optimal angle or have a problem ☹
 
 Scenario 2:
 
@@ -66,7 +67,10 @@ Scenario 2:
   
     Then the inverter likely has a problem ☹
 
-So that's it for the changes. Beyond these five new fields, let’s have some geeky fun and discuss the specs a little further.   Imagine we are comparing spec sheets from different manufacturers that have the same Pnom and ‘AC Max. Cont. Output Power’ .Just like before the stated specification is:
+So that's it for the changes. May you warrenty claims be plentiful!
+
+
+Beyond these five new fields, let’s have some geeky fun and discuss the specs a little further.   Imagine we are comparing spec sheets from different manufacturers that have the same Pnom and ‘AC Max. Cont. Output Power’ .Just like before the stated specification is:
 
 Manufacturer 1:
 
