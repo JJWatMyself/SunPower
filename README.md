@@ -3,7 +3,7 @@ This project is for monitoring SunPower solar using PRTG with Perl. Notes in rev
 
 2018/08/05 Ohhh, I have some knew stuff that I have been working on and ready to share an udate.  :)
 
-I have created five new fields which are calculations from realtime values combined with values that are derived from the manufacturer spec sheet. The four new fields are:
+I have created five new fields which are calculations from realtime values combined with values that are derived from the manufacturer spec sheet. The new fields are:
 
     p_mpptcont_output_power (%)
   
@@ -11,7 +11,7 @@ I have created five new fields which are calculations from realtime values combi
   
     actual_inv_eff (%)
   
-    rated_inv_eff (%)
+    rated_inv_eff (%) (not output directly by the script)
   
     delta_inv_eff (%)
  
