@@ -1,6 +1,85 @@
 # SunPower
 This project is for monitoring SunPower solar using PRTG with Perl. Notes in reverse chronology are below
 
+2018/08/05 Ohhh, I have some knew stuff that I have been working on to share.  :)
+
+I have created four new fields which are calculations that are derived from the manufacturer spec sheet.
+
+p_mpptcont_output_power (%)
+p_3phcont_output_power (%)
+actual_inv_eff (%)
+delta_inv_eff (%)
+
+To understand what these mean, consider the following details.
+
+Stated specification:
+
+•	Pnom of the panel is 335 W
+•	AC Max. Cont. Output Power is 320 W
+
+We can compare p_mpptsum_kw against ‘Pnom’ and p_3phsum_kw against ‘AC Mac. Cont. Output Power’. The resulting calculation is p_mpptcont_output_power (%) and p_3phcont_output_power (%).  These two fields provide more intuitive evaluation of the panel producing power. On a sunny day we want to see these at 100%. If lower than 100%, then this might be an indication of a problem with the panel or some other environmental factor, e.g. dirt on panel.
+
+The next area we can draw a conclusion is DC/AC CEC Conversion Efficiency. i.e. power in vs power out for the inverter.
+
+Stated specification:
+
+•	DC/AC CEC Conversion Efficiency 96%
+
+This is a simple calculation. 
+
+Pnom ÷ AC Max. Cont. Output Power = DC/AC CEC Conversion Efficiency
+
+Therefore, we can p_3phsum_kw to p_mpptsum_kw to calcualte the actual_inv_eff (%)
+
+Before you look at this and assume that 96% would be the target value for actual_inv_eff (%), how about we use a more accurate ‘DC/AC CEC Conversion Efficiency’ value. We’ll call this rated_inv_eff (%).
+
+335.00 ÷ 320.00 = 0.955224 (𝑜𝑟 95.5224%)
+
+Technically the spec sheet isn’t wrong, they have chosen to display a rounded integer: 96%. But the rating is less than 96%, so increasing accuracy on this can help us improve decisions we might make when analyzing the inverter efficiency. Therefore we want actual_inv_eff (%) to be 95.5224%.
+
+So for our fourth field delta_inv_eff (%) we will analyze the inverter efficiency in a more intuitive fashion by comparing actual_inv_eff (%) to rated_inv_eff (%). This tells us how close (delta) to our super accurate version of ‘DC/AC CEC Conversion Efficiency’ the inverter is performing.  A positive value means the performance is being exceeded (hurray!). A negative value means that the inverter is not performing to the stated spec (boooo!).  Observing these calculations for just one day I have already been able to conclude that when the power is less than 10-15%, the inverter under performs. At dawn and dusk or on a cloudy day if power is less than 10-15%, there is more power loss at the inverter. i.e. actual_inv_eff (%) < 95.5224%. Who would have known?
+
+We can use these four new fields and make some decisions:
+
+If it’s a beautiful sunny day
+  And p_mpptcont_output_power (%) and p_3phcont_output_power (%) < 100%
+    Then the panel may be in the shade, dirty or have a problem ☹
+
+If it’s a beautiful sunny day
+  And delta_inv_eff (%) < 0%
+    Then the inverter likely has a problem ☹
+
+So that's it for the changes. Beyond these four new fields, let’s have some geeky fun and discuss the specs a little further.   Imagine we are comparing spec sheets from different manufacturers that have the same Pnom and ‘AC Max. Cont. Output Power’ .Just like before the stated specification is:
+
+Manufacturer 1:
+
+•	Pnom of the panel is 335 W
+•	AC Max. Cont. Output Power is 320 W
+•	DC/AC CEC Conversion Efficiency 96%
+
+Manufacturer 2:
+
+•	Pnom of the panel is 335 W
+•	AC Max. Cont. Output Power is 320 W
+•	DC/AC CEC Conversion Efficiency 95%
+
+Manufacturer 1 is not better than manufacturer 2. They are in fact the identical spec! Here’s why.
+
+Let’s assume each manufacturer’s spec could means this:
+
+•	Pnom of the panel is between 334.5W and 335.49W
+•	AC Max. Cont. Output Power between 319.5W and 320.49W
+
+We can calculate the efficiency in an Excel table and say that maximum efficiency is somewhere in the region of 95.2338% to 95.8117%.
+
+335.49 ÷319.50 =0.952338 (𝑜𝑟 95.2338%)
+
+334.5.0 ÷320.49 =0.958117 (𝑜𝑟 95.8117%)
+
+Manufacturer 1 and 2 can pick a value anywhere in this table.  Or they can simply choose to round up or round down.  Some manufacturers may even use this to their advantage and increase the DC/AC CEC Conversion Efficiency’ (marketing B.S.). Make sense?
+
+Oh and no code has been posted yet. :D
+
 2018/08/01 The portion of the code that reports a specified field for all inverters, where the channel name is the inverter serial number, is now complete. This will be very interesting as provides a view of all inverters together and will show any differences in performance, be it due to environmental factors like angle, time of day shadows, snow or simply due to internal components. Note that the screenshots were created after the sun went down so the data is boring with a capital B.  In the morning it will come to life and as was the case with the first proof of concept screenshots, I would like to follow-up with more when there is a couple of days’ worth of data and perhaps will provide a two day historical view. The other thing that will likely be interesting is to see which inverter powers up first or powers off last each day.  My guess is that there will be a winner in each category.  If this data can be used as the basis of a warranty claim, then I'll claim credit now as I predict it will happen at some point. :) No code has been posted yet.
 
 Command line parameters: inverters state
