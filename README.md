@@ -55,15 +55,17 @@ Scenario 1:
 
     And p_mpptcont_output_power (%) and p_3phcont_output_power (%) < 100%
   
-    Then the panel may be in the shade, dirty, sub-optimal angle or have a problem ☹
+    Then the panel may be in the shade, dirty, sub-optimal angle or you need to move nearer he equator.
+    
+    If the values differ to the neighboring panel then you might have a problem ☹
 
 Scenario 2:
 
     If it’s a beautiful sunny day
 
-    And p_mpptcont_output_power (%) = 100%
+    And p_mpptcont_output_power (%) = X (e.g.90%)
   
-    And delta_inv_eff (%) < 0% (i.e. p_mpptcont_output_power (%) < 100%)
+    And delta_inv_eff (%) < 0% i.e. p_mpptcont_output_power (%) < X e.g. 80%
   
     Then the inverter likely has a problem ☹
 
