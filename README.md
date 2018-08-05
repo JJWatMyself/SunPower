@@ -49,15 +49,18 @@ So for our fith field delta_inv_eff (%) we will analyze the inverter efficiency 
 We can use these five new fields and make some decisions:
 
 If it’s a beautiful sunny day
+
   And p_mpptcont_output_power (%) and p_3phcont_output_power (%) < 100%
+  
     Then the panel may be in the shade, dirty or have a problem ☹
 
 If it’s a beautiful sunny day
+
   And p_mpptcont_output_power (%) = 100%
   
-  And delta_inv_eff (%) < 0% (i.e. p_mpptcont_output_power (%) < 100%)
+    And delta_inv_eff (%) < 0% (i.e. p_mpptcont_output_power (%) < 100%)
   
-  Then the inverter likely has a problem ☹
+      Then the inverter likely has a problem ☹
 
 So that's it for the changes. Beyond these five new fields, let’s have some geeky fun and discuss the specs a little further.   Imagine we are comparing spec sheets from different manufacturers that have the same Pnom and ‘AC Max. Cont. Output Power’ .Just like before the stated specification is:
 
