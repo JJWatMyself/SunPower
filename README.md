@@ -1,9 +1,9 @@
 # SunPower
 This project is for monitoring SunPower solar using PRTG with Perl. Notes in reverse chronology are below
 
-2018/08/05 Ohhh, I have some knew stuff that I have been working on to share.  :)
+2018/08/05 Ohhh, I have some knew stuff that I have been working on and ready to share an udate.  :)
 
-I have created four new fields which are calculations that are derived from the manufacturer spec sheet.
+I have created five new fields which are calculations from realtime values combined with values that are derived from the manufacturer spec sheet. The four new fields are:
 
   p_mpptcont_output_power (%)
   
@@ -11,8 +11,10 @@ I have created four new fields which are calculations that are derived from the 
   
   actual_inv_eff (%)
   
-  delta_inv_eff (%)
+  rated_inv_eff (%)
   
+  delta_inv_eff (%)
+ 
 
 To understand what these mean, consider the following details.
 
@@ -22,7 +24,7 @@ Stated specification:
   
   •	AC Max. Cont. Output Power is 320 W
 
-We can compare p_mpptsum_kw against ‘Pnom’ and p_3phsum_kw against ‘AC Mac. Cont. Output Power’. The resulting calculation is p_mpptcont_output_power (%) and p_3phcont_output_power (%).  These two fields provide more intuitive evaluation of the panel producing power. On a sunny day we want to see these at 100%. If lower than 100%, then this might be an indication of a problem with the panel or some other environmental factor, e.g. dirt on panel.
+We can compare p_mpptsum_kw against ‘Pnom’ and p_3phsum_kw against ‘AC Mac. Cont. Output Power’. The resulting calculation is p_mpptcont_output_power (%) and p_3phcont_output_power (%).  These two fields provide a more intuitive evaluation of power production vs. maximum possible. On a sunny day we want to see these at 100%. If lower than 100%, then this might be an indication of a problem with the panel or some other environmental factor, e.g. dirt on panel. Or simply not sunny enough.
 
 The next area we can draw a conclusion is DC/AC CEC Conversion Efficiency. i.e. power in vs power out for the inverter.
 
@@ -34,27 +36,30 @@ This is a simple calculation.
 
   Pnom ÷ AC Max. Cont. Output Power = DC/AC CEC Conversion Efficiency
 
-Therefore, we can p_3phsum_kw to p_mpptsum_kw to calcualte the actual_inv_eff (%)
+Therefore, we can compare p_3phsum_kw to p_mpptsum_kw and calcualte the actual_inv_eff (%)
 
 Before you look at this and assume that 96% would be the target value for actual_inv_eff (%), how about we use a more accurate ‘DC/AC CEC Conversion Efficiency’ value. We’ll call this rated_inv_eff (%).
 
   335.00 ÷ 320.00 = 0.955224 (𝑜𝑟 95.5224%)
 
-Technically the spec sheet isn’t wrong, they have chosen to display a rounded integer: 96%. But the rating is less than 96%, so increasing accuracy on this can help us improve decisions we might make when analyzing the inverter efficiency. Therefore we want actual_inv_eff (%) to be 95.5224%.
+Technically the spec sheet isn’t wrong, they have chosen to display an integer and rounded up: 96%. But the rating is less than 96%, so increasing accuracy on this can help us improve decisions we might make when analyzing the inverter efficiency. Therefore we want actual_inv_eff (%) to be 95.5224% or greater.
 
-So for our fourth field delta_inv_eff (%) we will analyze the inverter efficiency in a more intuitive fashion by comparing actual_inv_eff (%) to rated_inv_eff (%). This tells us how close (delta) to our super accurate version of ‘DC/AC CEC Conversion Efficiency’ the inverter is performing.  A positive value means the performance is being exceeded (hurray!). A negative value means that the inverter is not performing to the stated spec (boooo!).  Observing these calculations for just one day I have already been able to conclude that when the power is less than 10-15%, the inverter under performs. At dawn and dusk or on a cloudy day if power is less than 10-15%, there is more power loss at the inverter. i.e. actual_inv_eff (%) < 95.5224%. Who would have known?
+So for our fith field delta_inv_eff (%) we will analyze the inverter efficiency in a more intuitive fashion by comparing actual_inv_eff (%) to rated_inv_eff (%). This tells us how close (delta) to our super accurate version of ‘DC/AC CEC Conversion Efficiency’ the inverter is performing.  A positive value means the performance has exceeded (hurray!) the spec. A negative value means that the inverter is not performing to the stated spec (boooo!).  Observing these calculations for just one day I have already been able to conclude that when the power is less than 10-15%, the inverter under performs. At dawn and dusk or on a cloudy day if power is less than 10-15%, there is more power loss at the inverter. i.e. actual_inv_eff (%) < 95.5224%. The efficiency is as low as 65%. Who would have known?
 
-We can use these four new fields and make some decisions:
+We can use these five new fields and make some decisions:
 
 If it’s a beautiful sunny day
   And p_mpptcont_output_power (%) and p_3phcont_output_power (%) < 100%
     Then the panel may be in the shade, dirty or have a problem ☹
 
 If it’s a beautiful sunny day
-  And delta_inv_eff (%) < 0%
-    Then the inverter likely has a problem ☹
+  And p_mpptcont_output_power (%) = 100%
+  
+  And delta_inv_eff (%) < 0% (i.e. p_mpptcont_output_power (%) < 100%)
+  
+  Then the inverter likely has a problem ☹
 
-So that's it for the changes. Beyond these four new fields, let’s have some geeky fun and discuss the specs a little further.   Imagine we are comparing spec sheets from different manufacturers that have the same Pnom and ‘AC Max. Cont. Output Power’ .Just like before the stated specification is:
+So that's it for the changes. Beyond these five new fields, let’s have some geeky fun and discuss the specs a little further.   Imagine we are comparing spec sheets from different manufacturers that have the same Pnom and ‘AC Max. Cont. Output Power’ .Just like before the stated specification is:
 
 Manufacturer 1:
 
