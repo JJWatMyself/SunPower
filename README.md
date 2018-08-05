@@ -5,17 +5,17 @@ This project is for monitoring SunPower solar using PRTG with Perl. Notes in rev
 
 I have created four new fields which are calculations that are derived from the manufacturer spec sheet.
 
-p_mpptcont_output_power (%)
-p_3phcont_output_power (%)
-actual_inv_eff (%)
-delta_inv_eff (%)
+  p_mpptcont_output_power (%)
+  p_3phcont_output_power (%)
+  actual_inv_eff (%)
+  delta_inv_eff (%)
 
 To understand what these mean, consider the following details.
 
 Stated specification:
 
-•	Pnom of the panel is 335 W
-•	AC Max. Cont. Output Power is 320 W
+  •	Pnom of the panel is 335 W
+  •	AC Max. Cont. Output Power is 320 W
 
 We can compare p_mpptsum_kw against ‘Pnom’ and p_3phsum_kw against ‘AC Mac. Cont. Output Power’. The resulting calculation is p_mpptcont_output_power (%) and p_3phcont_output_power (%).  These two fields provide more intuitive evaluation of the panel producing power. On a sunny day we want to see these at 100%. If lower than 100%, then this might be an indication of a problem with the panel or some other environmental factor, e.g. dirt on panel.
 
@@ -23,17 +23,17 @@ The next area we can draw a conclusion is DC/AC CEC Conversion Efficiency. i.e. 
 
 Stated specification:
 
-•	DC/AC CEC Conversion Efficiency 96%
+  •	DC/AC CEC Conversion Efficiency 96%
 
 This is a simple calculation. 
 
-Pnom ÷ AC Max. Cont. Output Power = DC/AC CEC Conversion Efficiency
+  Pnom ÷ AC Max. Cont. Output Power = DC/AC CEC Conversion Efficiency
 
 Therefore, we can p_3phsum_kw to p_mpptsum_kw to calcualte the actual_inv_eff (%)
 
 Before you look at this and assume that 96% would be the target value for actual_inv_eff (%), how about we use a more accurate ‘DC/AC CEC Conversion Efficiency’ value. We’ll call this rated_inv_eff (%).
 
-335.00 ÷ 320.00 = 0.955224 (𝑜𝑟 95.5224%)
+  335.00 ÷ 320.00 = 0.955224 (𝑜𝑟 95.5224%)
 
 Technically the spec sheet isn’t wrong, they have chosen to display a rounded integer: 96%. But the rating is less than 96%, so increasing accuracy on this can help us improve decisions we might make when analyzing the inverter efficiency. Therefore we want actual_inv_eff (%) to be 95.5224%.
 
@@ -53,28 +53,27 @@ So that's it for the changes. Beyond these four new fields, let’s have some ge
 
 Manufacturer 1:
 
-•	Pnom of the panel is 335 W
-•	AC Max. Cont. Output Power is 320 W
-•	DC/AC CEC Conversion Efficiency 96%
+  •	Pnom of the panel is 335 W
+  •	AC Max. Cont. Output Power is 320 W
+  •	DC/AC CEC Conversion Efficiency 96%
 
 Manufacturer 2:
 
-•	Pnom of the panel is 335 W
-•	AC Max. Cont. Output Power is 320 W
-•	DC/AC CEC Conversion Efficiency 95%
+  •	Pnom of the panel is 335 W
+  •	AC Max. Cont. Output Power is 320 W
+  •	DC/AC CEC Conversion Efficiency 95%
 
 Manufacturer 1 is not better than manufacturer 2. They are in fact the identical spec! Here’s why.
 
 Let’s assume each manufacturer’s spec could means this:
 
-•	Pnom of the panel is between 334.5W and 335.49W
-•	AC Max. Cont. Output Power between 319.5W and 320.49W
+  •	Pnom of the panel is between 334.5W and 335.49W
+  •	AC Max. Cont. Output Power between 319.5W and 320.49W
 
 We can calculate the efficiency in an Excel table and say that maximum efficiency is somewhere in the region of 95.2338% to 95.8117%.
 
-335.49 ÷319.50 =0.952338 (𝑜𝑟 95.2338%)
-
-334.5.0 ÷320.49 =0.958117 (𝑜𝑟 95.8117%)
+  335.49 ÷319.50 =0.952338 (𝑜𝑟 95.2338%)
+  334.5.0 ÷320.49 =0.958117 (𝑜𝑟 95.8117%)
 
 Manufacturer 1 and 2 can pick a value anywhere in this table.  Or they can simply choose to round up or round down.  Some manufacturers may even use this to their advantage and increase the DC/AC CEC Conversion Efficiency’ (marketing B.S.). Make sense?
 
