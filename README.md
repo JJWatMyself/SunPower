@@ -70,7 +70,7 @@ Scenario 2:
 So that's it for the changes. May you warrenty claims be plentiful!
 
 
-Beyond these five new fields, let’s have some geeky fun and discuss the specs a little further.   Imagine we are comparing spec sheets from different manufacturers that have the same Pnom and ‘AC Max. Cont. Output Power’ .Just like before the stated specification is:
+Beyond these five new fields, let’s have some geeky fun and discuss the specs a little further.   Imagine we are comparing spec sheets from different manufacturers that have the same Pnom and ‘AC Max. Cont. Output Power’ but the 'DC/AC CEC Conversion Efficiency' differs. Here are two stated specification examples:
 
 Manufacturer 1:
 
