@@ -70,35 +70,35 @@ So that's it for the changes. Beyond these five new fields, let’s have some ge
 
 Manufacturer 1:
 
-    •	Pnom of the panel is 335 W
+    •	Pnom 335 W
   
-    •	AC Max. Cont. Output Power is 320 W
+    •	AC Max. Cont. Output Power 320 W
   
     •	DC/AC CEC Conversion Efficiency 96%
 
 Manufacturer 2:
 
-    •	Pnom of the panel is 335 W
+    •	Pnom 335 W
   
-    •	AC Max. Cont. Output Power is 320 W
+    •	AC Max. Cont. Output Power 320 W
   
     •	DC/AC CEC Conversion Efficiency 95%
 
 Manufacturer 1 is not better than manufacturer 2. They are in fact the identical spec! Here’s why.
 
-Let’s assume each manufacturer’s spec could means this:
+Let’s assume each manufacturer’s spec could mean this:
 
-    •	Pnom of the panel is between 334.5W and 335.49W
+    •	Pnom is between 334.5W and 335.49W
   
-    •	AC Max. Cont. Output Power between 319.5W and 320.49W
+    •	AC Max. Cont. Output Power is between 319.5W and 320.49W
 
-We can calculate the efficiency in an Excel table and say that maximum efficiency is somewhere in the region of 95.2338% to 95.8117%.
+We can calculate all possible combinations of efficiency in an Excel table and see that maximum efficiency is somewhere in the region of 95.2338% to 95.8117%.  Here are two of the corners of that table:
 
     335.49 ÷319.50 =0.952338 (𝑜𝑟 95.2338%)
   
     334.5.0 ÷320.49 =0.958117 (𝑜𝑟 95.8117%)
 
-Manufacturer 1 and 2 can pick a value anywhere in this table.  Or they can simply choose to round up or round down.  Some manufacturers may even use this to their advantage and increase the DC/AC CEC Conversion Efficiency’ (marketing B.S.). Make sense?
+Manufacturer 1 and 2 can pick a value anywhere in this table and be telling the truth.  Or they can simply choose to round up or round down, which is technically the truth also.  Some manufacturers may even use this to their advantage and increase the DC/AC CEC Conversion Efficiency’ (marketing B.S.). Make sense?
 
 Oh and no code has been posted yet. :D
 
