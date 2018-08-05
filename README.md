@@ -26,6 +26,9 @@ Stated specification:
 
 We can compare p_mpptsum_kw against ‘Pnom’ and p_3phsum_kw against ‘AC Mac. Cont. Output Power’. The resulting calculation is p_mpptcont_output_power (%) and p_3phcont_output_power (%).  These two fields provide a more intuitive evaluation of power production vs. maximum possible. On a sunny day we want to see these as close to 100% as possible. If lower than 100%, then this might be an indication of an environmental factor, e.g. dirt on panel, sub-optimal angle, shade,  not sunny enough.  But it could also tell us that there is a problem with the panel, especially if panels that sit side-by-side greatly differ.
 
+Screen shot of p_mpptcont_output_power from today.
+![Preview](https://raw.githubusercontent.com/JJWatMyself/SunPower/master/proof-of-concept8.png)
+
 The next area we can draw a conclusion is DC/AC CEC Conversion Efficiency. i.e. power in vs power out for the inverter.
 
 Stated specification:
@@ -38,6 +41,9 @@ This is a simple calculation.
 
 Therefore, we can compare p_3phsum_kw to p_mpptsum_kw and calcualte the actual_inv_eff (%)
 
+Screen shot of actual_inv_eff from today.
+![Preview](https://raw.githubusercontent.com/JJWatMyself/SunPower/master/proof-of-concept9.png)
+
 Before you look at this and assume that 96% would be the target value for actual_inv_eff (%), how about we use a more accurate ‘DC/AC CEC Conversion Efficiency’ value. We’ll call this rated_inv_eff (%).
 
     335.00 ÷ 320.00 = 0.955224 (𝑜𝑟 95.5224%)
@@ -46,6 +52,8 @@ Technically the spec sheet isn’t wrong, they have chosen to display an integer
 
 So for our fith field delta_inv_eff (%) we will analyze the inverter efficiency in a more intuitive fashion by comparing actual_inv_eff (%) to rated_inv_eff (%). This tells us how close (delta) to our super accurate version of ‘DC/AC CEC Conversion Efficiency’ the inverter is performing.  A positive value means the performance has exceeded (hurray!) the spec. A negative value means that the inverter is not performing to the stated spec (boooo!).  Observing these calculations for just one day I have already been able to conclude that when the power is less than 10-15%, the inverter under performs. At dawn and dusk or on a cloudy day if power is less than 10-15%, there is more power loss at the inverter. i.e. actual_inv_eff (%) < 95.5224%. The efficiency is as low as 65%. Who would have known?  At that power level though, who cares what the efficiency is.
 
+Screen shot of delta_inv_eff from today.
+![Preview](https://raw.githubusercontent.com/JJWatMyself/SunPower/master/proof-of-concept10.png)
 
 So with all this new derived data, we can use the additional five new fields and make some decisions:
 
