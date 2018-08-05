@@ -24,7 +24,7 @@ Stated specification:
   
     •	AC Max. Cont. Output Power 320 W
 
-We can compare p_mpptsum_kw against ‘Pnom’ and p_3phsum_kw against ‘AC Mac. Cont. Output Power’. The resulting calculation is p_mpptcont_output_power (%) and p_3phcont_output_power (%).  These two fields provide a more intuitive evaluation of power production vs. maximum possible. On a sunny day we want to see these at 100%. If lower than 100%, then this might be an indication of a problem with the panel or some other environmental factor, e.g. dirt on panel, sub-optimal angle, shade, or simply not sunny enough.
+We can compare p_mpptsum_kw against ‘Pnom’ and p_3phsum_kw against ‘AC Mac. Cont. Output Power’. The resulting calculation is p_mpptcont_output_power (%) and p_3phcont_output_power (%).  These two fields provide a more intuitive evaluation of power production vs. maximum possible. On a sunny day we want to see these as close to 100% as possible. If lower than 100%, then this might be an indication of an environmental factor, e.g. dirt on panel, sub-optimal angle, shade,  not sunny enough.  But it could also tell us that there is a problem with the panel, especially if panels that sit side-by-side greatly differ.
 
 The next area we can draw a conclusion is DC/AC CEC Conversion Efficiency. i.e. power in vs power out for the inverter.
 
