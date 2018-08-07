@@ -1,6 +1,13 @@
 # SunPower
 This project is for monitoring SunPower solar using PRTG with Perl. Notes in reverse chronology are below
 
+2018/08/06 Couple nice little tweaks this evening.  I added a field called ltea_3phsum_kwh_diff, which is the same as ltea_3phsum_kwh except within PRTG it will be rendered as the difference between current ltea_3phsum_kwh and last ltea_3phsum_kwh divided by the number of elapsed seconds between the polling intervals.  The result is kwh/s i.e. the speed of ltea_3phsum_kwh production.  This is better than p_3phsum_kw as that's just a snapshot in time of the kW at the moment the script ran. I don't have any screenshots to share on this yet as the sun has decided to hide itself behind our planet for the next few hours. Implementing that was the simplest thing done so far.  I literllay just duplicated the secion of XML for ltea_3phsum_kwh, changed the channel (field) name and added the following line:
+
+	print "<Mode>Difference</Mode>\n";
+
+Talk about a major coding work-out for my fingers! Next up, remember how I said  that I didn't like that I was storing zeros when there was no data? Zero should mean zero, not null.  So now when a panel is off (i.e. state=error), all the other fields will no longer show zero and no data will be output.  Rocket science right? Yawn. Screenshot below to show this in action.  I have a list of planned features still but I'm more of a under commit, over deliver type. Plus there is always the chance I'll change my mind.  That plus other tweaks that seem to make sense.  Oh and no code has been posted yet. :D
+![Preview](https://raw.githubusercontent.com/JJWatMyself/SunPower/master/proof-of-concept11.png)
+
 2018/08/05 Ohhh, I have some knew stuff that I have been working on and ready to share an udate.  :)
 
 I have created five new fields which are calculations from realtime values combined with values that are derived from the manufacturer spec sheet. The new fields are:
