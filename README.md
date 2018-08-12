@@ -1,6 +1,20 @@
 # SunPower
 This project is for monitoring SunPower solar using PRTG with Perl. Notes in reverse chronology are below
 
+2018/08/12 Here is something that has been bugging me throughout this project so far. The design is that the perl script does an http get against the supervisor IP and pulls the JSON from cgi-bin/dl_cgi?Command=DeviceList.  This means that for every PRTG sensor, the sciprt runs and pulls from the supervisor URL once.  As thnigs stand there are 32 sensors I have been using for testing. When I add all 24 panels, this will increase to 59 sensors. This will result in the supervisor URL being hit 59 times per minute. The response time of the URL is typically between one and three seconds.  See the problem here? So what is in the back of my mind is that I need a seperate process that will grab the contents of the URL twice a minute only and store the result in a file. The script  would then target the file.  I say twice a minute becasue if it were every 60 seconds like the sensors, then there is the posibility two consecutive polling cycles for a panel might retrieve the same data.  So in a nutshel, the result of creating a seperate process to pull the JSON data from the superivosr would be as follows:
+
+	eliminate the one to three second run-time for the script
+	eleviate the concern I have hitting the supervisor URL in a very wasteful fashion (59 times per minute)
+	provide a far more scalable script
+
+Because PRTG supports 50 channels per sensor, this means that the script would then be able to support up to 50 panels in inverter mode (i.e. one channel per panel) and an unlimited amount of panels in serial number mode.
+
+Drum roll please...I have implemented this new component today and it super simple to implement.  
+
+Behold the PRTG 'HTTP Advanced' sensor.  You give it a URL and it dumps the contents into a file every 30 seconds.  The new sensor is then configured as the master to the parent, which means that if the URL stops responding, then all the sensors under the device will auto pause. The perl script has been updated to read the contents of this file.  BAM!!! The only thing I am not sure about is if there will be any collisions, i.e. perl script is running while the file is being written to.  I'm just crossing my fingers that file locks will prevail and it will sort itself out.  If this turns into an issue, then I would need to shift tactics and do something that leverages a lock file to verify it isn't being written to.  Here's the HTTP Advanced sensor.
+
+![Preview](https://raw.githubusercontent.com/JJWatMyself/SunPower/master/proof-of-concept13.png)
+
 2018/08/11 Ok.  After the change to convert from kWh to Wh PRTG is shoing data, but it's a graph that looks terrible. Looking at the raw data (screenshot below) it is clear that the panel does not increment kWh in real-time.  We can see that the vlaue of kWh is static for two to three minutes. If we take a reading every 60 seconds, the reading is not changing. PRTG by default will then take this value and divide by the number of elapsed seconds since the last polling interval, in this case 60.  I have adjusted the polling interval on one of the PRTG panel sensors to five minutes. This will have a number of effects on the monitoring: 1) the new field should show non-zero data and result in a smooth graph; 2) live data (raw) and 2-day will be the same, i.e. 2-day uses 5 minute averaging. 3) loss of resolution on all other existing fields.  Not sure if I like that.
 
 ![Preview](https://raw.githubusercontent.com/JJWatMyself/SunPower/master/proof-of-concept13.png)
