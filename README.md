@@ -9,7 +9,7 @@ This project is for monitoring SunPower solar using PRTG with Perl. Notes in rev
 
 Because PRTG supports 50 channels per sensor, this means that the script would then be able to support up to 50 panels in inverter mode (i.e. one channel per panel) and an unlimited amount of panels in serial number mode.
 
-Drum roll please...I have implemented this new component today and it super simple to implement.  
+Drum roll please...I have implemented this optimization today and it was super simple do.  
 
 Behold the PRTG 'HTTP Advanced' sensor.  You give it a URL and it dumps the contents into a file every 30 seconds.  The new sensor is then configured as the master to the parent, which means that if the URL stops responding, then all the sensors under the device will auto pause. The perl script has been updated to read the contents of this file.  BAM!!! The only thing I am not sure about is if there will be any collisions, i.e. perl script is running while the file is being written to.  I'm just crossing my fingers that file locks will prevail and it will sort itself out.  If this turns into an issue, then I would need to shift tactics and do something that leverages a lock file to verify it isn't being written to.  Here's the HTTP Advanced sensor.
 
